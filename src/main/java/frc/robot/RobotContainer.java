@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -62,12 +63,14 @@ public class RobotContainer
     // // controls are front-left positive
     // // left stick controls translation
     // // right stick controls the desired angle NOT angular rotation
+
+    
     Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
       () -> MathUtil.applyDeadband(driverXbox.getRawAxis(1), OperatorConstants.LEFT_Y_DEADBAND), // Left Stick Y-Axis
       () -> MathUtil.applyDeadband(driverXbox.getRawAxis(0), OperatorConstants.LEFT_X_DEADBAND), // Left Stick X-Axis
       () -> MathUtil.applyDeadband(driverXbox.getRawAxis(4), OperatorConstants.RIGHT_X_DEADBAND) // Right Stick X-Axis
       );
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+     drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
 
 
     // Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
@@ -97,8 +100,7 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 1).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driverXbox, 5).onTrue(new InstantCommand(drivebase::sysIdDriveMotorCommand));
-
+    //new JoystickButton(driverXbox, 5).whileTrue(new RunCommand(drivebase::sysIdDriveMotorCommand));
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
 
@@ -110,7 +112,9 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Test Auto", true);
+    return drivebase.sysIdAngleMotorCommand();
+
+   // drivebase.getAutonomousCommand("Path 1", true);
   }
 
   public void setDriveMode()

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
+import frc.robot.Constants.AutonConstants;
 
 import java.io.File;
 import java.util.function.DoubleSupplier;
@@ -115,13 +116,11 @@ public class SwerveSubsystem extends SubsystemBase
         this::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::setChassisSpeeds, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                                         new PIDConstants(5.0, 0.0, 0.0),
+                                         AutonConstants.TRANSLATION_PID,
                                          // Translation PID constants
-                                         new PIDConstants(swerveDrive.swerveController.config.headingPIDF.p,
-                                                          swerveDrive.swerveController.config.headingPIDF.i,
-                                                          swerveDrive.swerveController.config.headingPIDF.d),
+                                         AutonConstants.ANGLE_PID,
                                          // Rotation PID constants
-                                         4.5,
+                                         4.4,
                                          // Max module speed, in m/s
                                          swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(),
                                          // Drive base radius in meters. Distance from robot center to furthest module.
